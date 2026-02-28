@@ -12,8 +12,25 @@ import os
 import sys
 import pickle
 import json
+import subprocess
+import time
+import socket
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+def start_backend():
+    """Start FastAPI in the background if not running."""
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            if s.connect_ex(('localhost', 8000)) != 0:
+                print("🚀 Starting FastAPI backend...")
+                subprocess.Popen([sys.executable, "-m", "uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"])
+                time.sleep(5) # Wait for startup
+    except Exception as e:
+        print(f"Error starting backend: {e}")
+
+# Start backend at initialization
+start_backend()
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # ─── Config ──────────────────────────────────────────────────
 API_URL = os.environ.get("API_URL", "http://localhost:8000")

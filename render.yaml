@@ -1,0 +1,32 @@
+services:
+  # ─── API Service (FastAPI) ──────────────────────────────────
+  - type: web
+    name: flight-delay-api
+    env: python
+    buildCommand: |
+      pip install -r requirements.txt
+      python data/generate_data.py
+      python -c "from etl.pipeline import run_pipeline; run_pipeline()"
+      python -c "from database.db_manager import DuckDBManager; db = DuckDBManager(); db.load_data(); db.close()"
+      python mlops/train.py
+    startCommand: uvicorn api.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11
+      - key: MLFLOW_TRACKING_URI
+        value: file:///opt/render/project/src/mlruns
+
+  # ─── UI Service (Streamlit) ─────────────────────────────────
+  - type: web
+    name: flight-delay-ui
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run frontend/app.py --server.port $PORT --server.address 0.0.0.0 --server.headless true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11
+      - key: API_URL
+        fromService:
+          type: web
+          name: flight-delay-api
+          property: host
