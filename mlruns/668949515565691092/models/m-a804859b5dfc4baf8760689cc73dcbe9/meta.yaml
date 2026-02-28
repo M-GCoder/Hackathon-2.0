@@ -1,0 +1,10 @@
+artifact_location: file:///C:/Users/toshiba/Desktop/Hackathon 2.0/Hackathon-2.0/mlruns/668949515565691092/models/m-a804859b5dfc4baf8760689cc73dcbe9/artifacts
+creation_timestamp: 1772305564891
+experiment_id: '668949515565691092'
+last_updated_timestamp: 1772305576976
+model_id: m-a804859b5dfc4baf8760689cc73dcbe9
+model_type: null
+name: GradientBoosting
+source_run_id: 8b041a2369c143f1912f4eb7e1b85d4f
+status: 2
+status_message: null

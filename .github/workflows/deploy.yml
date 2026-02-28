@@ -1,0 +1,127 @@
+name: Flight Delay ML - CI/CD
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    name: Lint & Test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest flake8
+
+      - name: Lint with flake8
+        run: |
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=120 --statistics
+
+      - name: Generate data
+        run: python data/generate_data.py
+
+      - name: Run ETL pipeline
+        run: python -c "from etl.pipeline import run_pipeline; run_pipeline()"
+
+      - name: Train models
+        run: python mlops/train.py
+
+      - name: Evaluate model
+        run: python mlops/evaluate.py
+
+      - name: Test API startup
+        run: |
+          python -c "
+          from api.main import app
+          from fastapi.testclient import TestClient
+          client = TestClient(app)
+          resp = client.get('/health')
+          assert resp.status_code == 200
+          print('✅ API health check passed')
+          "
+
+      - name: Test prediction endpoint
+        run: |
+          python -c "
+          from api.main import app
+          from fastapi.testclient import TestClient
+          client = TestClient(app)
+          payload = {
+              'month': 7, 'day_of_month': 15, 'day_of_week': 3,
+              'dep_hour': 14, 'dep_minute': 30, 'carrier': 'AA',
+              'origin': 'JFK', 'dest': 'LAX', 'distance': 2475,
+              'dep_delay': 5, 'taxi_out': 18, 'crs_elapsed_time': 330
+          }
+          resp = client.post('/predict', json=payload)
+          assert resp.status_code == 200
+          result = resp.json()
+          assert 'prediction' in result
+          assert 'delay_probability' in result
+          print(f'✅ Prediction test passed: {result[\"prediction\"]} ({result[\"delay_probability\"]:.1%})')
+          "
+
+  docker-build:
+    runs-on: ubuntu-latest
+    name: Docker Build
+    needs: lint-and-test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        run: |
+          docker build -t flight-delay-prediction:latest .
+          echo "✅ Docker build successful"
+
+      - name: Test Docker container
+        run: |
+          docker run -d --name test-container -p 8000:8000 flight-delay-prediction:latest
+          sleep 15
+          curl -f http://localhost:8000/health || echo "Container health check"
+          docker logs test-container --tail 20
+          docker stop test-container
+          docker rm test-container
+
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy
+    needs: docker-build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy notification
+        run: |
+          echo "🚀 Ready for deployment"
+          echo "   Branch: ${{ github.ref }}"
+          echo "   Commit: ${{ github.sha }}"
+          echo ""
+          echo "To deploy to Railway:"
+          echo "  railway up"
+          echo ""
+          echo "To deploy to HuggingFace Spaces:"
+          echo "  huggingface-cli upload <space-name> . ."

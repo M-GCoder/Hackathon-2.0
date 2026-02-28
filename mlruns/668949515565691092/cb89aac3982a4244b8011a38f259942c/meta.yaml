@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/toshiba/Desktop/Hackathon 2.0/Hackathon-2.0/mlruns/668949515565691092/cb89aac3982a4244b8011a38f259942c/artifacts
+end_time: 1772305320493
+entry_point_name: ''
+experiment_id: '668949515565691092'
+lifecycle_stage: active
+run_id: cb89aac3982a4244b8011a38f259942c
+run_name: RandomForest
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1772305306758
+status: 3
+tags: []
+user_id: toshiba

@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/toshiba/Desktop/Hackathon 2.0/Hackathon-2.0/mlruns/668949515565691092/d6ab15a1ebf446008d90ddc5eac4b61e/artifacts
+end_time: 1772305453756
+entry_point_name: ''
+experiment_id: '668949515565691092'
+lifecycle_stage: active
+run_id: d6ab15a1ebf446008d90ddc5eac4b61e
+run_name: LogisticRegression
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1772305428284
+status: 3
+tags: []
+user_id: toshiba

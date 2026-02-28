@@ -1,0 +1,10 @@
+artifact_location: file:///C:/Users/toshiba/Desktop/Hackathon 2.0/Hackathon-2.0/mlruns/668949515565691092/models/m-297c574a63b34e869d0e836c0d6b9363/artifacts
+creation_timestamp: 1772305265279
+experiment_id: '668949515565691092'
+last_updated_timestamp: 1772305294452
+model_id: m-297c574a63b34e869d0e836c0d6b9363
+model_type: null
+name: LogisticRegression
+source_run_id: 1191ac5c791f46219157b0c533dabd36
+status: 2
+status_message: null

@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flight-delay-api
+    ports:
+      - "8000:8000"
+      - "8501:8501"
+    environment:
+      - MLFLOW_TRACKING_URI=file:///app/mlruns
+      - API_URL=http://localhost:8000
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./monitoring:/app/monitoring
+      - ./mlruns:/app/mlruns
+      - ./database:/app/database
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  mlflow:
+    image: python:3.11-slim
+    container_name: flight-delay-mlflow
+    ports:
+      - "5000:5000"
+    working_dir: /app
+    volumes:
+      - ./mlruns:/app/mlruns
+    command: >
+      bash -c "pip install mlflow && mlflow server --host 0.0.0.0 --port 5000 --backend-store-uri file:///app/mlruns"
+    restart: unless-stopped

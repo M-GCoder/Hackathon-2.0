@@ -1,0 +1,10 @@
+artifact_location: file:///C:/Users/toshiba/Desktop/Hackathon 2.0/Hackathon-2.0/mlruns/668949515565691092/models/m-83c19c1a95c145c89affbcd2a5a358e2/artifacts
+creation_timestamp: 1772305307207
+experiment_id: '668949515565691092'
+last_updated_timestamp: 1772305320441
+model_id: m-83c19c1a95c145c89affbcd2a5a358e2
+model_type: null
+name: RandomForest
+source_run_id: cb89aac3982a4244b8011a38f259942c
+status: 2
+status_message: null

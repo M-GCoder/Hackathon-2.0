@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/toshiba/Desktop/Hackathon 2.0/Hackathon-2.0/mlruns/668949515565691092/8b041a2369c143f1912f4eb7e1b85d4f/artifacts
+end_time: 1772305577008
+entry_point_name: ''
+experiment_id: '668949515565691092'
+lifecycle_stage: active
+run_id: 8b041a2369c143f1912f4eb7e1b85d4f
+run_name: GradientBoosting
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1772305564500
+status: 3
+tags: []
+user_id: toshiba

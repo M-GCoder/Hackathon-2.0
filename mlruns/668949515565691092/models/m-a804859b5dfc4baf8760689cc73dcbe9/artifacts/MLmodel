@@ -1,0 +1,22 @@
+artifact_path: file:///C:/Users/toshiba/Desktop/Hackathon 2.0/Hackathon-2.0/mlruns/668949515565691092/models/m-a804859b5dfc4baf8760689cc73dcbe9/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.13.7
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.7.2
+mlflow_version: 3.8.1
+model_id: m-a804859b5dfc4baf8760689cc73dcbe9
+model_size_bytes: 1632709
+model_uuid: m-a804859b5dfc4baf8760689cc73dcbe9
+prompts: null
+run_id: 8b041a2369c143f1912f4eb7e1b85d4f
+utc_time_created: '2026-02-28 19:06:05.076727'
