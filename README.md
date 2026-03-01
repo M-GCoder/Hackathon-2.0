@@ -106,6 +106,11 @@ uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 streamlit run frontend/app.py --server.port 8501
 ```
 
+### OR Start Both API & Streamlit UI
+```bash
+Start-Process powershell -ArgumentList "-Command", "cd '{Replace the File Explorer path}'; python -m uvicorn api. main:app -- host 0.0.0.0 --port 8000"; Streamlit run frontend/app.py --server.port 8501
+```
+
 ### 7. Docker (all-in-one)
 ```bash
 docker-compose up --build
@@ -155,4 +160,4 @@ curl -X POST http://localhost:8000/predict \
 
 ## 📜 License
 
-MIT © 2024 Hackathon 2.0 Team
+MIT © 2026 Abdullah Idrees
